@@ -48,3 +48,15 @@ insert into tbl_passwort (MitarbeiterNr, passwort) values
 insert into tbl_rfidchips (MitarbeiterNr, UID) values 
     (1, "d92dba4"),
     (2, "76bfd25");
+
+--when insert in tbl_mitarbeiter insert standart password
+DELIMITER //
+CREATE TRIGGER employee_insert_trigger
+AFTER INSERT ON tbl_mitarbeiter
+FOR EACH ROW
+BEGIN
+  INSERT INTO tbl_passwort (MitarbeiterNr, Passwort)
+  VALUES (NEW.MitarbeiterNr, '123');
+END;
+//
+DELIMITER ;
