@@ -13,6 +13,7 @@ namespace TaschenrechnerForms
     {
         string connectionString = "SERVER=localhost; DATABASE=db_zeiterfassung; UID=root; PASSWORD=;";
         private SerialPort serialPort;
+        private Form2 form2;
 
         public Form1()
         {
@@ -25,6 +26,23 @@ namespace TaschenrechnerForms
         }
 
         #region Eventhandeler Methoden
+        private void button_schließen_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void button_hinzufuegen_Click(object sender, EventArgs e)
+        {
+            if (form2 == null || form2.IsDisposed)
+            {
+                CloseSerialPort();
+
+                form2 = new Form2();
+                form2.Show();
+                this.Hide();
+            }
+        }
+
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             string uid = serialPort.ReadLine();
@@ -33,14 +51,6 @@ namespace TaschenrechnerForms
             string uidWithoutPrefix = cleanedUID.Replace("UID: ", "");
 
             RFIDScanned(uidWithoutPrefix);
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (serialPort.IsOpen)
-            {
-                serialPort.Close();
-            }
         }
 
         private void textBox_mitarbeiterNr_TextChanged(object sender, EventArgs e)
@@ -184,6 +194,7 @@ namespace TaschenrechnerForms
         #endregion
 
         #region extra Methoden
+
         private void RFIDScanned(string scannedUID)
         {
             DatabaseHelper dbHelper = new DatabaseHelper();
@@ -195,6 +206,15 @@ namespace TaschenrechnerForms
                 this.Invoke((Action)(() => { 
                     textBox_mitarbeiterNr.Text = mitarbeiterNr;
                 }));
+
+                if (textBox_mitarbeiterNr.InvokeRequired)
+                {
+                    textBox_mitarbeiterNr.Invoke((Action)(() => textBox_mitarbeiterNr.Text = mitarbeiterNr));
+                }
+                else
+                {
+                    textBox_mitarbeiterNr.Text = mitarbeiterNr;
+                }
             }
             else
             {
@@ -339,9 +359,23 @@ namespace TaschenrechnerForms
                 }
             }
             catch (FormatException)
+            { }
+        }
+
+        private void CloseSerialPort()
+        {
+            if (serialPort.IsOpen)
             {
-                MessageBox.Show("Ungültiges Zeitformat. Bitte verwenden Sie das Format 'HH:mm:ss'.");
+                serialPort.Close();
+                serialPort.DataReceived -= SerialPort_DataReceived;
             }
+        }
+
+        private void OpenForm2Button_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.FormClosing += (s, args) => CloseSerialPort();
+            form2.Show();
         }
         #endregion
     }

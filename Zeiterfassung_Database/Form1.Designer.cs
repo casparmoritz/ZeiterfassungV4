@@ -45,6 +45,8 @@
             this.label_passwort = new System.Windows.Forms.Label();
             this.textBox_passwort = new System.Windows.Forms.TextBox();
             this.textBox_mitarbeiterNr = new System.Windows.Forms.TextBox();
+            this.button_hinzufuegen = new System.Windows.Forms.Button();
+            this.button_schließen = new System.Windows.Forms.Button();
             this.groupBox_auswahl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,7 +111,7 @@
             // 
             this.groupBox_auswahl.Controls.Add(this.radioButton_gehen);
             this.groupBox_auswahl.Controls.Add(this.radioButton_kommen);
-            this.groupBox_auswahl.Location = new System.Drawing.Point(136, 125);
+            this.groupBox_auswahl.Location = new System.Drawing.Point(136, 166);
             this.groupBox_auswahl.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_auswahl.Name = "groupBox_auswahl";
             this.groupBox_auswahl.Padding = new System.Windows.Forms.Padding(2);
@@ -203,11 +205,33 @@
             this.textBox_mitarbeiterNr.TabIndex = 16;
             this.textBox_mitarbeiterNr.TextChanged += new System.EventHandler(this.textBox_mitarbeiterNr_TextChanged);
             // 
+            // button_hinzufuegen
+            // 
+            this.button_hinzufuegen.Location = new System.Drawing.Point(136, 116);
+            this.button_hinzufuegen.Name = "button_hinzufuegen";
+            this.button_hinzufuegen.Size = new System.Drawing.Size(74, 45);
+            this.button_hinzufuegen.TabIndex = 17;
+            this.button_hinzufuegen.Text = "Mitarbeiter Himzufügen";
+            this.button_hinzufuegen.UseVisualStyleBackColor = true;
+            this.button_hinzufuegen.Click += new System.EventHandler(this.button_hinzufuegen_Click);
+            // 
+            // button_schließen
+            // 
+            this.button_schließen.Location = new System.Drawing.Point(227, 116);
+            this.button_schließen.Name = "button_schließen";
+            this.button_schließen.Size = new System.Drawing.Size(72, 45);
+            this.button_schließen.TabIndex = 18;
+            this.button_schließen.Text = "Programm beenden";
+            this.button_schließen.UseVisualStyleBackColor = true;
+            this.button_schließen.Click += new System.EventHandler(this.button_schließen_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(311, 214);
+            this.ClientSize = new System.Drawing.Size(311, 222);
+            this.Controls.Add(this.button_schließen);
+            this.Controls.Add(this.button_hinzufuegen);
             this.Controls.Add(this.textBox_mitarbeiterNr);
             this.Controls.Add(this.textBox_passwort);
             this.Controls.Add(this.label_passwort);
@@ -249,5 +273,7 @@
         private System.Windows.Forms.Label label_passwort;
         private System.Windows.Forms.TextBox textBox_passwort;
         private System.Windows.Forms.TextBox textBox_mitarbeiterNr;
+        private System.Windows.Forms.Button button_hinzufuegen;
+        private System.Windows.Forms.Button button_schließen;
     }
 }
