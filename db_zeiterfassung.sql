@@ -17,7 +17,7 @@ create table tbl_zeit
 );
 
 CREATE TABLE tbl_mitarbeiter (
-    mitarbeiter_id INT PRIMARY KEY NOT NULL,
+    mitarbeiterNr INT PRIMARY KEY NOT NULL,
     vorname VARCHAR(50),
     nachname VARCHAR(50)
 );
@@ -48,7 +48,7 @@ BEGIN
     DELETE FROM tbl_zeit WHERE MitarbeiterNr = v_MitarbeiterNr;
 
     -- Lösche Zeilen in tbl_mitarbeiter
-    DELETE FROM tbl_mitarbeiter WHERE mitarbeiter_id = v_MitarbeiterNr;
+    DELETE FROM tbl_mitarbeiter WHERE mitarbeiterNr = v_MitarbeiterNr;
 
     -- Speichere die MitarbeiterNr in einer temporären Tabelle
     CREATE TEMPORARY TABLE tmp_deleted_mitarbeiter (MitarbeiterNr INT);
