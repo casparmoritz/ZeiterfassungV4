@@ -36,28 +36,7 @@ create TABLE tbl_rfidchips
 
 -- when somthing is deleted this code is called
 DELIMITER //
-CREATE TRIGGER delete_related_rows_tbl_rfidchips
-BEFORE DELETE ON tbl_rfidchips
-FOR EACH ROW
-BEGIN
-    DECLARE v_MitarbeiterNr INT;
-    SET v_MitarbeiterNr = OLD.MitarbeiterNr;
 
-    -- Lösche Zeilen in tbl_zeit
-    DELETE FROM tbl_zeit WHERE MitarbeiterNr = v_MitarbeiterNr;
-
-    -- Lösche Zeilen in tbl_mitarbeiter
-    DELETE FROM tbl_mitarbeiter WHERE mitarbeiterNr = v_MitarbeiterNr;
-
-    -- Lösche Zeilen in tbl_passwort
-    DELETE FROM tbl_passwort WHERE MitarbeiterNr = v_MitarbeiterNr;
-END;
-//
-DELIMITER ;
-
--- -----------
-
-DELIMITER //
 CREATE TRIGGER delete_related_rows_tbl_passwort
 BEFORE DELETE ON tbl_passwort
 FOR EACH ROW
@@ -69,34 +48,21 @@ BEGIN
     DELETE FROM tbl_zeit WHERE MitarbeiterNr = v_MitarbeiterNr;
 
     -- Lösche Zeilen in tbl_mitarbeiter
-    DELETE FROM tbl_mitarbeiter WHERE mitarbeiterNr = v_MitarbeiterNr;
+    DELETE FROM tbl_mitarbeiter WHERE mitarbeiter_id = v_MitarbeiterNr;
 
-    -- Lösche Zeilen in tbl_rfidchips
-    DELETE FROM tbl_rfidchips WHERE MitarbeiterNr = v_MitarbeiterNr;
+    -- Speichere die MitarbeiterNr in einer temporären Tabelle
+    CREATE TEMPORARY TABLE tmp_deleted_mitarbeiter (MitarbeiterNr INT);
+    INSERT INTO tmp_deleted_mitarbeiter VALUES (v_MitarbeiterNr);
+
+    -- Lösche Zeilen in tbl_rfidchips nach dem Trigger
+    DELETE FROM tbl_rfidchips WHERE MitarbeiterNr IN (SELECT MitarbeiterNr FROM tmp_deleted_mitarbeiter);
+
+    -- Lösche Zeilen in tbl_passwort nach dem Trigger
+    DELETE FROM tbl_passwort WHERE MitarbeiterNr IN (SELECT MitarbeiterNr FROM tmp_deleted_mitarbeiter);
 END;
 //
+
 DELIMITER ;
 
--- -----------
-
-DELIMITER //
-CREATE TRIGGER delete_related_rows_tbl_mitarbeiter
-BEFORE DELETE ON tbl_mitarbeiter
-FOR EACH ROW
-BEGIN
-    DECLARE v_MitarbeiterNr INT;
-    SET v_MitarbeiterNr = OLD.mitarbeiterNr;
-
-    -- Lösche Zeilen in tbl_zeit
-    DELETE FROM tbl_zeit WHERE MitarbeiterNr = v_MitarbeiterNr;
-
-    -- Lösche Zeilen in tbl_passwort
-    DELETE FROM tbl_passwort WHERE MitarbeiterNr = v_MitarbeiterNr;
-
-    -- Lösche Zeilen in tbl_rfidchips
-    DELETE FROM tbl_rfidchips WHERE MitarbeiterNr = v_MitarbeiterNr;
-END;
-//
-DELIMITER ;
 
 
