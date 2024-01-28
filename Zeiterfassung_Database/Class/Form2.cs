@@ -85,10 +85,6 @@ namespace Zeiterfassung_Database.Class
             }
             else
             {
-                string query = $"INSERT INTO tbl_mitarbeiter (MitarbeiterNr, Vorname, Nachname) values (@MitarbeiterNr, @Vorname, @Nachname);" +
-               $"INSERT INTO tbl_passwort (MitarbeiterNr, passwort) values (@MitarbeiterNr, @passwort);" +
-               $"INSERT INTO tbl_rfidchips (MitarbeiterNr, uid) values (@MitarbeiterNr, @uid);";
-
                 string uidToCheck = textBox_uid.Text;
 
                 string checkUidQuery = "SELECT COUNT(*) FROM tbl_rfidchips WHERE uid = @uid";
@@ -108,6 +104,10 @@ namespace Zeiterfassung_Database.Class
                     }
                 }
 
+                string query = $"INSERT INTO tbl_mitarbeiter (MitarbeiterNr, Vorname, Nachname) values (@MitarbeiterNr, @Vorname, @Nachname);" +
+                               $"INSERT INTO tbl_passwort (MitarbeiterNr, passwort) values (@MitarbeiterNr, @passwort);" +
+                               $"INSERT INTO tbl_rfidchips (MitarbeiterNr, uid) values (@MitarbeiterNr, @uid);";
+
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
@@ -122,6 +122,7 @@ namespace Zeiterfassung_Database.Class
                         command.ExecuteNonQuery();
                     }
                 }
+                MessageBox.Show("Der Mitarbeiter wurde erfolgreich in die Datenbank aufgenommen!");
             }
         }
     }
