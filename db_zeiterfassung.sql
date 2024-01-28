@@ -34,7 +34,7 @@ create TABLE tbl_rfidchips
     UID char(7)
 );
 
--- when somthing is deleted this code is called
+-- when something is deleted this code is called
 DELIMITER //
 
 CREATE TRIGGER delete_related_rows_tbl_passwort
@@ -44,20 +44,15 @@ BEGIN
     DECLARE v_MitarbeiterNr INT;
     SET v_MitarbeiterNr = OLD.MitarbeiterNr;
 
-    -- Lösche Zeilen in tbl_zeit
     DELETE FROM tbl_zeit WHERE MitarbeiterNr = v_MitarbeiterNr;
 
-    -- Lösche Zeilen in tbl_mitarbeiter
     DELETE FROM tbl_mitarbeiter WHERE mitarbeiterNr = v_MitarbeiterNr;
 
-    -- Speichere die MitarbeiterNr in einer temporären Tabelle
     CREATE TEMPORARY TABLE tmp_deleted_mitarbeiter (MitarbeiterNr INT);
     INSERT INTO tmp_deleted_mitarbeiter VALUES (v_MitarbeiterNr);
 
-    -- Lösche Zeilen in tbl_rfidchips nach dem Trigger
     DELETE FROM tbl_rfidchips WHERE MitarbeiterNr IN (SELECT MitarbeiterNr FROM tmp_deleted_mitarbeiter);
 
-    -- Lösche Zeilen in tbl_passwort nach dem Trigger
     DELETE FROM tbl_passwort WHERE MitarbeiterNr IN (SELECT MitarbeiterNr FROM tmp_deleted_mitarbeiter);
 END;
 //
