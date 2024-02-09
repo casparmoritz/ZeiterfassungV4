@@ -8,25 +8,25 @@ use db_zeiterfassung;
 
 create table tbl_zeit
 (
-    MitarbeiterNr int not null,
+    MitarbeiterNr int PRIMARY KEY not null,
     `Zeit_kommen` time,
     `Zeit_gehen`time
 );
 
 CREATE TABLE tbl_mitarbeiter (
-    mitarbeiterNr INT NOT NULL,
+    mitarbeiterNr INT PRIMARY KEY NOT NULL,
     vorname VARCHAR(50),
     nachname VARCHAR(50)
 );
  
 create table tbl_passwort
 (
-    MitarbeiterNr INT NOT NULL,
+    MitarbeiterNr INT PRIMARY KEY NOT NULL,
     passwort varchar (15)
 );
 
 create TABLE tbl_rfidchips
 (
-    MitarbeiterNr int NOT NULL,
+    MitarbeiterNr int PRIMARY KEY NOT NULL,
     UID char(7)
 );
